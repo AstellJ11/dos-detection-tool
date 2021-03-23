@@ -122,3 +122,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+data/
+__pycache__/
+.idea/inspectionProfiles/
+.idea/discord.xml
+.idea/other.xml
+
+test.py
