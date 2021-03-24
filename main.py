@@ -16,7 +16,12 @@ def DoSDetection():
     # Open text file + output the data/time of current compilation
     file_txt = open("dos-output.txt", 'a')
 
-    print("Running detection...")  # Report to user to ensure somethings happening
+    print("Running detection...")  # Report to terminal to ensure somethings happening
+    running = "Running detection..."
+    progress.configure(text=running)
+
+    pcount = tk.Label(window, text='Waiting to receive packets!')
+    pcount.place(relx=0.76, rely=0.60, anchor='center')
 
     # Minimum number of packets required to be flagged as a DoS attack
     packets_req = 1000
@@ -29,9 +34,13 @@ def DoSDetection():
         IP = socket.inet_ntoa(ip_hdr[3])
 
         print("Source IP", IP)
+
         if IP in dict:
             dict[IP] = dict[IP] + 1
             print(dict[IP])
+            new_value = "Packet received from: " + str(IP) + "\n Count: " + str(dict[IP])
+            pcount.configure(text=new_value)
+
             if (dict[IP] > packets_req) and (dict[IP] < packets_req_stop):
                 time = str(datetime.now().strftime("Current time of compilation: %Y-%m-%d %H:%M:%S"))
                 file_txt.writelines(time)
@@ -50,6 +59,7 @@ def DoSDetection():
             file_txt.writelines("\n")
             line2 = "No DoS detected at this time "
             file_txt.writelines(line2)
+            file_txt.writelines("\n")
             break  # Break while loop when stop = 1
 
 
@@ -68,10 +78,8 @@ def stop_thread():
     global stop
     stop = 1
     print("Stopping detection...")
-
-
-# def DoSAttack():
-## TO DO
+    running = "Stopping detection..."
+    progress.configure(text=running)
 
 
 # Open file and output results to text widget
@@ -92,26 +100,22 @@ window = tk.Tk()
 window.geometry("800x500")
 window.title("DoS Identification Tool")
 
+# Title for tk window
 fontStyle = tkFont.Font(family="Lucida Grande", size=20)
 greeting = tk.Label(text="DoS Attack Results", font=fontStyle)
 greeting.place(relx=0.28, rely=0.07, anchor='center')
 
+# Button to start and stop detection
 btn = tk.Button(window, text="Start DoS\nDetection", fg='blue', command=lambda: start_thread())
 btn.place(x=500, y=125)
-
 btn2 = tk.Button(window, text="Stop DoS\nDetection", fg='blue', command=lambda: stop_thread())
 btn2.place(x=650, y=125)
-
-# btn3 = tk.Button(window, text="Start DoS\nAttack", fg='blue', command=lambda: DoSAttack())
-# btn3.place(x=500, y=250)
-
-btn4 = tk.Button(window, text="Stop DoS\nAttack", fg='blue', command=lambda: stop_thread())
-btn4.place(x=650, y=250)
 
 # Button to close tk window
 btn_end = tk.Button(window, text="Close", fg='blue', command=window.destroy)
 btn_end.place(x=575, y=376)
 
+# Button to refresh tk window
 btn_rfs = tk.Button(window, text="Refresh", fg='blue', command=lambda: refresh())
 btn_rfs.place(x=175, y=450)
 
@@ -132,6 +136,9 @@ if (os.stat(filename).st_size == 0) is True:
 else:
     with open(filename, 'r') as f:
         configfile.insert(tk.INSERT, f.read())
+
+progress = tk.Label(window, text='Waiting for command!')
+progress.place(relx=0.76, rely=0.50, anchor='center')
 
 window.mainloop()
 

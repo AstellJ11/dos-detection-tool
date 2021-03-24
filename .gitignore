@@ -130,3 +130,5 @@ __pycache__/
 .idea/other.xml
 
 test.py
+
+.idea/workspace.xml
