@@ -3,6 +3,7 @@ import struct
 from datetime import datetime
 import tkinter as tk
 import tkinter.font as tkFont
+from tkinter import ttk
 from threading import Thread
 import os
 
@@ -20,7 +21,7 @@ def DoSDetection():
     running = "Running detection..."
     progress.configure(text=running)
 
-    pcount = tk.Label(window, text='Waiting to receive packets!')
+    pcount = tk.Label(window, text='Waiting to receive packets!', bg='#282828', fg='#33FF00')
     pcount.place(relx=0.76, rely=0.60, anchor='center')
 
     # Minimum number of packets required to be flagged as a DoS attack
@@ -49,6 +50,8 @@ def DoSDetection():
                 file_txt.writelines(line)
                 file_txt.writelines(IP)
                 file_txt.writelines("\n")
+                saved = "Detection successfully stopped!"
+                progress.configure(text=saved)
 
         else:
             dict[IP] = 1
@@ -60,6 +63,8 @@ def DoSDetection():
             line2 = "No DoS detected at this time "
             file_txt.writelines(line2)
             file_txt.writelines("\n")
+            saved = "Detection successfully stopped!"
+            progress.configure(text=saved)
             break  # Break while loop when stop = 1
 
 
@@ -78,7 +83,7 @@ def stop_thread():
     global stop
     stop = 1
     print("Stopping detection...")
-    running = "Stopping detection..."
+    running = "Stopping detection, please wait..."
     progress.configure(text=running)
 
 
@@ -98,35 +103,40 @@ def refresh():
 # Create tkinter window
 window = tk.Tk()
 window.geometry("800x500")
+window['background'] = '#282828'
 window.title("DoS Identification Tool")
 
 # Title for tk window
 fontStyle = tkFont.Font(family="Lucida Grande", size=20)
-greeting = tk.Label(text="DoS Attack Results", font=fontStyle)
+greeting = tk.Label(text="DoS Attack Results", font=fontStyle, bg='#282828', fg='white')
 greeting.place(relx=0.28, rely=0.07, anchor='center')
 
 # Button to start and stop detection
-btn = tk.Button(window, text="Start DoS\nDetection", fg='blue', command=lambda: start_thread())
+btn = tk.Button(window, text="Start DoS\nDetection", bg='#3C3C3C', fg='white', highlightbackground='#33FF00',
+                activebackground='#646464', activeforeground='white', command=lambda: start_thread())
 btn.place(x=500, y=125)
-btn2 = tk.Button(window, text="Stop DoS\nDetection", fg='blue', command=lambda: stop_thread())
+btn2 = tk.Button(window, text="Stop DoS\nDetection", bg='#3C3C3C', fg='white', highlightbackground='#33FF00',
+                 activebackground='#646464', activeforeground='white', command=lambda: stop_thread())
 btn2.place(x=650, y=125)
 
 # Button to close tk window
-btn_end = tk.Button(window, text="Close", fg='blue', command=window.destroy)
+btn_end = tk.Button(window, text="Close", bg='#3C3C3C', fg='white', highlightbackground='#33FF00',
+                    activebackground='#646464', activeforeground='white', command=window.destroy)
 btn_end.place(x=575, y=376)
 
 # Button to refresh tk window
-btn_rfs = tk.Button(window, text="Refresh", fg='blue', command=lambda: refresh())
+btn_rfs = tk.Button(window, text="Refresh", bg='#3C3C3C', fg='white', highlightbackground='#33FF00',
+                    activebackground='#646464', activeforeground='white', command=lambda: refresh())
 btn_rfs.place(x=175, y=450)
 
 # Create text widget
-configfile = tk.Text(window, wrap=tk.WORD, width=50, height=22)
+configfile = tk.Text(window, wrap=tk.WORD, width=50, height=22, bg='#0A0A0A', fg='#33FF00')
 configfile.place(relx=0.27, rely=0.50, anchor='center')
 
 # Add scroll bar to text widget
 S = tk.Scrollbar(window)
 S.pack(side=tk.LEFT)
-S.config(command=configfile.yview)
+S.config(command=configfile.yview, bg='#646464', troughcolor='#282828', highlightthickness=0)
 configfile.config(yscrollcommand=S.set)
 
 # Ensure the current contents of the text file are displayed on first run through
@@ -137,7 +147,7 @@ else:
     with open(filename, 'r') as f:
         configfile.insert(tk.INSERT, f.read())
 
-progress = tk.Label(window, text='Waiting for command!')
+progress = tk.Label(window, text='Waiting for command!', bg='#282828', fg='#33FF00')
 progress.place(relx=0.76, rely=0.50, anchor='center')
 
 window.mainloop()
