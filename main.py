@@ -3,7 +3,6 @@ import struct
 from datetime import datetime
 import tkinter as tk
 import tkinter.font as tkFont
-from tkinter import ttk
 from threading import Thread
 import os
 

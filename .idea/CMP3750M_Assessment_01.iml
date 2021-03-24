@@ -5,4 +5,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="E:\Users\Mark\Documents\GitHub\CMP3750M_Assessment_01\requirements.txt" />
+  </component>
 </module>
