@@ -37,7 +37,6 @@ def DoSDetection():
 
         if IP in dict:
             dict[IP] = dict[IP] + 1
-            print(dict[IP])
             new_value = "Packet received from: " + str(IP) + "\n Count: " + str(dict[IP])
             pcount.configure(text=new_value)
 
